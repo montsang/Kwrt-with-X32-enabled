@@ -226,6 +226,7 @@ jobs:
         fi
         cp -Rf ./diy/* ./ || true
 
+
     - name: Modify Kernel Config
       run: |
         KERNEL_CONFIG=$(find $GITHUB_WORKSPACE/openwrt/build_dir/target-*/linux-*/linux-*/.config)
