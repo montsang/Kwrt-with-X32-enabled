@@ -227,14 +227,16 @@ jobs:
         cp -Rf ./diy/* ./ || true
 
 
-    - name: Modify Kernel Config
+    - name: Modify Kernel Config Files
       run: |
-        KERNEL_CONFIG=$(find $GITHUB_WORKSPACE/openwrt/build_dir/target-*/linux-*/linux-*/.config)
-        echo "Modifying Kernel Config: $KERNEL_CONFIG"
-        sed -i '/CONFIG_IA32_EMULATION/d' $KERNEL_CONFIG
-        sed -i '/CONFIG_X86_X32/d' $KERNEL_CONFIG
-        echo "CONFIG_IA32_EMULATION=y" >> $KERNEL_CONFIG
-        echo "CONFIG_X86_X32=y" >> $KERNEL_CONFIG
+        for file in $GITHUB_WORKSPACE/openwrt/target/linux/x86/64/config-*; do
+        echo "Modifying $file"
+        sed -i '/CONFIG_IA32_EMULATION/d' "$file"
+        sed -i '/CONFIG_X86_X32/d' "$file"
+        echo "CONFIG_IA32_EMULATION=y" >> "$file"
+        echo "CONFIG_X86_X32=y" >> "$file"
+        done
+
 
     - name: Apply patches
       run: |
